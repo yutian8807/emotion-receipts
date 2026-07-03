@@ -1,3 +1,5 @@
 # Sample Website
 
-A starter repository for a sample website.
+A simple static website built with HTML, CSS, and JavaScript.
+
+Open `index.html` in a browser to view it locally.

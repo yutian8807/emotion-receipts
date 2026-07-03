@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sample Website</title>
+    <meta
+      name="description"
+      content="A simple, polished starter website published from a local GitHub repository."
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Sample Website home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>Sample Website</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <img
+          class="hero-image"
+          src="assets/hero-workspace.png"
+          alt="A bright desk workspace with a laptop and notebook."
+        >
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Freshly published</p>
+          <h1 id="hero-title">A clean starter site for the web.</h1>
+          <p class="hero-copy">
+            This simple page is ready to grow into a portfolio, product page, or
+            project home.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#work">See the sections</a>
+            <a class="button secondary" href="https://github.com/yutian8807/sample-website">View on GitHub</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="work" class="section intro-section">
+        <div class="section-heading">
+          <p class="eyebrow">What is here</p>
+          <h2>Small, fast, and easy to edit.</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="feature-number">01</span>
+            <h3>Responsive layout</h3>
+            <p>Looks good on a phone, tablet, or desktop without extra setup.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-number">02</span>
+            <h3>Static files</h3>
+            <p>Plain HTML, CSS, and JavaScript keep the site simple to publish.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-number">03</span>
+            <h3>Ready for GitHub</h3>
+            <p>The files are committed locally and can be pushed whenever you update them.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" class="section split-section">
+        <div>
+          <p class="eyebrow">About</p>
+          <h2>A starter page with room to become yours.</h2>
+        </div>
+        <p>
+          Replace this copy with your own story, project details, screenshots,
+          links, or anything else you want visitors to see first.
+        </p>
+      </section>
+
+      <section id="contact" class="section contact-section">
+        <div>
+          <p class="eyebrow">Next step</p>
+          <h2>Make a change, commit it, push it.</h2>
+        </div>
+        <button class="button primary" type="button" id="contactButton">
+          Show a friendly note
+        </button>
+        <p class="note" id="contactNote" hidden>
+          Nice. Your site is alive, editable, and already connected to GitHub.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>© <span id="year"></span> Sample Website</span>
+      <a href="#top">Back to top</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
