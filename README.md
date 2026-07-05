@@ -1,5 +1,5 @@
-# Sample Website
+# Overthinking Receipt Printer
 
-A simple static website built with HTML, CSS, and JavaScript.
+A playful web prototype for auditing the mental toll of overthinking.
 
 Open `index.html` in a browser to view it locally.
