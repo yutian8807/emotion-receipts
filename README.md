@@ -1,4 +1,4 @@
-# Overthinking Receipt Printer
+# Emotion Receipts
 
 A playful web prototype for auditing the mental toll of overthinking.
 
