@@ -394,32 +394,47 @@ select:focus {
   font-size: 1.1rem;
 }
 
-.challenge-panel,
 .action-card {
   margin-top: 16px;
   padding: 16px;
   border-radius: 8px;
 }
 
-.challenge-panel {
+.inline-audit {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
   background: #fff5df;
   border: 1px solid #ead09c;
+  border-radius: 8px;
 }
 
-.challenge-panel .eyebrow,
 .action-card .eyebrow {
   color: var(--accent-dark);
 }
 
-.challenge-panel p,
-.challenge-panel ul,
+.inline-kicker {
+  margin: 0;
+  color: var(--accent-dark);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.audit-question {
+  margin-bottom: 0;
+  color: #3f352c;
+  font-weight: 850;
+}
+
+.inline-audit p,
+.inline-audit ul,
 .action-card p {
   color: #4f4438;
 }
 
 .evidence-prompts {
   padding: 12px;
-  margin-bottom: 14px;
   background: rgba(255, 255, 255, 0.56);
   border: 1px solid rgba(24, 21, 17, 0.08);
   border-radius: 8px;
@@ -439,7 +454,11 @@ select:focus {
   display: grid;
   grid-template-columns: 1fr;
   gap: 8px;
-  margin-top: 12px;
+}
+
+.inline-audit textarea {
+  min-height: 96px;
+  background: #fffdf4;
 }
 
 .action-card {

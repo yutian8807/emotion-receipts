@@ -14,7 +14,7 @@
     <main class="app-shell">
       <section class="hero-panel" aria-labelledby="pageTitle">
         <div class="brand-row">
-          <span class="brand-mark" aria-hidden="true">ORP</span>
+          <span class="brand-mark" aria-hidden="true">ER</span>
           <span>Emotion Receipts</span>
         </div>
 
@@ -61,7 +61,7 @@
 
         <article class="receipt-card" id="receiptCard" hidden>
           <header class="receipt-header">
-            <p>OVERTHINKING RECEIPT</p>
+            <p>EMOTION RECEIPT</p>
             <span id="receiptDate"></span>
           </header>
 
@@ -86,40 +86,6 @@
               <strong id="finalTotal">$0.00</strong>
             </div>
           </div>
-
-          <section class="challenge-panel" id="challengePanel" hidden>
-            <p class="eyebrow">Dispute counter</p>
-            <h2 id="challengeTitle">Challenge this charge</h2>
-            <p id="challengeQuestion"></p>
-
-            <div class="evidence-prompts">
-              <p>Quick audit questions:</p>
-              <ul>
-                <li>Is this definitely real?</li>
-                <li>What evidence do you actually have?</li>
-                <li>Is this a thinking trap trying to look official?</li>
-              </ul>
-            </div>
-
-            <label for="argumentInput">Your counter-argument</label>
-            <textarea
-              id="argumentInput"
-              rows="3"
-              placeholder="Example: I do not know what they think. I only know they have not replied yet."
-            ></textarea>
-
-            <div class="challenge-actions">
-              <button class="button discount" type="button" data-verdict="trap">
-                Cross off as thinking trap
-              </button>
-              <button class="button discount" type="button" data-verdict="unproven">
-                Discount as unproven
-              </button>
-              <button class="button keep" type="button" data-verdict="real">
-                Keep as real
-              </button>
-            </div>
-          </section>
 
           <section class="action-card" id="actionCard" hidden>
             <p class="eyebrow">Final payable action</p>

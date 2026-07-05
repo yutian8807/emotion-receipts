@@ -9,10 +9,6 @@ const receiptLines = document.querySelector("#receiptLines");
 const originalTotal = document.querySelector("#originalTotal");
 const discountTotal = document.querySelector("#discountTotal");
 const finalTotal = document.querySelector("#finalTotal");
-const challengePanel = document.querySelector("#challengePanel");
-const challengeTitle = document.querySelector("#challengeTitle");
-const challengeQuestion = document.querySelector("#challengeQuestion");
-const argumentInput = document.querySelector("#argumentInput");
 const actionCard = document.querySelector("#actionCard");
 const actionText = document.querySelector("#actionText");
 const reprintButton = document.querySelector("#reprintButton");
@@ -87,7 +83,6 @@ const actions = {
 };
 
 let activeReceipt = null;
-let activeChargeId = null;
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -114,20 +109,12 @@ copyButton.addEventListener("click", async () => {
   }
 });
 
-document.querySelectorAll("[data-verdict]").forEach((button) => {
-  button.addEventListener("click", () => {
-    applyVerdict(button.dataset.verdict);
-  });
-});
-
 function printReceipt() {
   const worry = worryInput.value.trim() || "A vague anxious cloud with no itemized memo";
   const tone = toneSelect.value;
   activeReceipt = createReceipt(worry, tone);
-  activeChargeId = null;
   emptyState.hidden = true;
   receiptCard.hidden = false;
-  challengePanel.hidden = true;
   actionCard.hidden = true;
   receiptDate.textContent = new Date().toLocaleDateString(undefined, {
     month: "short",
@@ -150,6 +137,7 @@ function createReceipt(worry, tone) {
       status: "pending",
       note: getToneNote(tone, charge.id),
       argument: "",
+      isOpen: false,
     };
   });
 
@@ -163,6 +151,7 @@ function createReceipt(worry, tone) {
     status: "real",
     note: "This stays on the bill because action is cheaper than spiraling.",
     argument: "One small action remains payable.",
+    isOpen: false,
   });
 
   return {
@@ -211,6 +200,8 @@ function renderReceipt() {
 
     const statusText = getStatusText(charge);
     const canAudit = charge.id !== "real-action";
+    const auditLabel = charge.isOpen ? "Close audit" : "Audit charge";
+    const inlineAudit = charge.isOpen ? buildInlineAudit(charge) : "";
 
     line.innerHTML = `
       <div class="line-main">
@@ -224,38 +215,80 @@ function renderReceipt() {
       </div>
       <p class="line-note">${escapeHtml(statusText)}</p>
       <div class="line-controls">
-        ${canAudit ? `<button class="button secondary" type="button" data-audit="${charge.id}">Audit charge</button>` : ""}
+        ${canAudit ? `<button class="button secondary" type="button" data-audit="${charge.id}">${auditLabel}</button>` : ""}
       </div>
+      ${inlineAudit}
     `;
 
     receiptLines.appendChild(line);
   });
 
   receiptLines.querySelectorAll("[data-audit]").forEach((button) => {
-    button.addEventListener("click", () => openChallenge(button.dataset.audit));
+    button.addEventListener("click", () => toggleAudit(button.dataset.audit));
+  });
+
+  receiptLines.querySelectorAll("[data-verdict]").forEach((button) => {
+    button.addEventListener("click", () => {
+      applyVerdict(button.dataset.chargeId, button.dataset.verdict);
+    });
   });
 
   updateTotals();
   updateAction();
 }
 
-function openChallenge(chargeId) {
-  const charge = activeReceipt.charges.find((item) => item.id === chargeId);
-  activeChargeId = chargeId;
-  challengeTitle.textContent = charge.label;
-  challengeQuestion.textContent = charge.question;
-  argumentInput.value = charge.argument;
-  challengePanel.hidden = false;
-  challengePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+function buildInlineAudit(charge) {
+  const argumentId = `argument-${charge.id}`;
+
+  return `
+    <div class="inline-audit">
+      <p class="inline-kicker">Dispute this charge</p>
+      <p class="audit-question">${escapeHtml(charge.question)}</p>
+      <div class="evidence-prompts">
+        <p>Quick audit questions:</p>
+        <ul>
+          <li>Is this definitely real?</li>
+          <li>What evidence do you actually have?</li>
+          <li>Is this a thinking trap trying to look official?</li>
+        </ul>
+      </div>
+      <label for="${argumentId}">Your counter-argument</label>
+      <textarea
+        id="${argumentId}"
+        data-argument="${charge.id}"
+        rows="3"
+        placeholder="Example: I only know they have not replied yet. I do not know what they think."
+      >${escapeHtml(charge.argument)}</textarea>
+      <div class="challenge-actions">
+        <button class="button discount" type="button" data-charge-id="${charge.id}" data-verdict="trap">
+          Cross off as thinking trap
+        </button>
+        <button class="button discount" type="button" data-charge-id="${charge.id}" data-verdict="unproven">
+          Discount as unproven
+        </button>
+        <button class="button keep" type="button" data-charge-id="${charge.id}" data-verdict="real">
+          Keep as real
+        </button>
+      </div>
+    </div>
+  `;
 }
 
-function applyVerdict(verdict) {
-  if (!activeChargeId) {
-    return;
-  }
+function toggleAudit(chargeId) {
+  const charge = activeReceipt.charges.find((item) => item.id === chargeId);
+  const nextOpenState = !charge.isOpen;
 
-  const charge = activeReceipt.charges.find((item) => item.id === activeChargeId);
-  charge.argument = argumentInput.value.trim();
+  activeReceipt.charges.forEach((item) => {
+    item.isOpen = item.id === chargeId ? nextOpenState : false;
+  });
+
+  renderReceipt();
+}
+
+function applyVerdict(chargeId, verdict) {
+  const charge = activeReceipt.charges.find((item) => item.id === chargeId);
+  const argumentInput = receiptLines.querySelector(`[data-argument="${chargeId}"]`);
+  charge.argument = argumentInput ? argumentInput.value.trim() : "";
 
   if (verdict === "trap") {
     charge.status = "trap";
@@ -275,8 +308,7 @@ function applyVerdict(verdict) {
     charge.note = charge.argument || "Kept partially payable: real enough to handle, not big enough to dominate.";
   }
 
-  challengePanel.hidden = true;
-  activeChargeId = null;
+  charge.isOpen = false;
   renderReceipt();
 }
 
@@ -380,7 +412,7 @@ function buildReceiptText() {
     .join("\n");
 
   return [
-    "OVERTHINKING RECEIPT",
+    "EMOTION RECEIPT",
     `Charge description: ${activeReceipt.worry}`,
     "",
     lines,
